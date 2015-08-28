@@ -829,6 +829,11 @@ class Guake(SimpleGladeApp):
         self.window.set_type_hint(gtk.gdk.WINDOW_TYPE_HINT_DOCK)
         self.window.set_type_hint(gtk.gdk.WINDOW_TYPE_HINT_NORMAL)
 
+        statePath = os.path.join(os.path.expanduser('~'), '.guake-state')
+        stateFile = open(statePath, 'w')
+        stateFile.write('show')
+        stateFile.close()
+
         # log.debug("Restoring skip_taskbar_hint and skip_pager_hint")
         # if is_iconified:
         #     self.get_widget('window-root').set_skip_taskbar_hint(False)
@@ -867,6 +872,11 @@ class Guake(SimpleGladeApp):
         self.get_widget('window-root').unstick()
         self.window.hide()  # Don't use hide_all here!
 
+        statePath = os.path.join(os.path.expanduser('~'), '.guake-state')
+        stateFile = open(statePath, 'w')
+        stateFile.write('hide')
+        stateFile.close()
+        
     def get_final_window_monitor(self):
         """Gets the final screen number for the main window of guake.
         """
