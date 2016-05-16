@@ -829,6 +829,7 @@ class Guake(SimpleGladeApp):
         self.window.set_type_hint(gtk.gdk.WINDOW_TYPE_HINT_DOCK)
         self.window.set_type_hint(gtk.gdk.WINDOW_TYPE_HINT_NORMAL)
 
+        # Add guake identifire
         statePath = os.path.join(os.path.expanduser('~'), '.guake-state')
         stateFile = open(statePath, 'w')
         stateFile.write('show')
@@ -872,6 +873,7 @@ class Guake(SimpleGladeApp):
         self.get_widget('window-root').unstick()
         self.window.hide()  # Don't use hide_all here!
 
+        # Add guake identifire
         statePath = os.path.join(os.path.expanduser('~'), '.guake-state')
         stateFile = open(statePath, 'w')
         stateFile.write('hide')
@@ -1482,6 +1484,9 @@ class Guake(SimpleGladeApp):
         method of a vte terminal. Params returned can be expanded by
         the `params' parameter that receive a dictionary.
         """
+        # Add guake identifire
+        os.environ['IS_GUAKE'] = '1'
+
         # use dictionary to pass named params to work around command
         # parameter in fork_command not accepting None as argument.
         # When we pass None as command, vte starts the default user
@@ -1508,6 +1513,7 @@ class Guake(SimpleGladeApp):
         # need to be set before calling terminal.fork_command()
         # method. So I found this place good to do it.
         self.update_proxy_vars()
+
         return params
 
     def update_proxy_vars(self):
