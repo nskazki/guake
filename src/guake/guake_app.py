@@ -36,6 +36,7 @@ import subprocess
 import sys
 import xdg.Exceptions
 
+from pprint import pprint
 from urllib import quote_plus
 from urllib import url2pathname
 from urlparse import urlsplit
@@ -119,7 +120,6 @@ MAX_TRANSPARENCY = 100
 
 log = logging.getLogger(__name__)
 
-
 class PromptQuitDialog(gtk.MessageDialog):
 
     """Prompts the user whether to quit/close a tab.
@@ -173,6 +173,7 @@ class Guake(SimpleGladeApp):
         self.hidden = True
         self.forceHide = False
         self.preventHide = False
+        self.guake_tab_counter = 0
 
         # trayicon! Using SVG handles better different OS trays
         img = pixmapfile('guake-tray.svg')
@@ -1582,6 +1583,10 @@ class Guake(SimpleGladeApp):
         if isinstance(directory, basestring):
             default_params['directory'] = directory
 
+        guake_tab_index = self.guake_tab_counter
+        self.guake_tab_counter += 1
+        os.environ['GUAKE_TAB_INDEX'] = str(guake_tab_index)
+
         final_params = self.get_fork_params(default_params)
         pid = box.terminal.fork_command(**final_params)
         if libutempter is not None:
@@ -1589,6 +1594,9 @@ class Guake(SimpleGladeApp):
             libutempter.utempter_add_record(
                 box.terminal.get_pty(), os.uname()[1])
         box.terminal.pid = pid
+
+        box.terminal.guake_tab_index = guake_tab_index
+        box.terminal.link2box = box
 
         # Adding a new radio button to the tabbar
         label = box.terminal.get_window_title() or _("Terminal")
@@ -1773,7 +1781,17 @@ class Guake(SimpleGladeApp):
         """
         pagepos = self.notebook.get_current_page()
         self.selected_tab = self.tabs.get_children()[pagepos]
+
         return pagepos
+
+    def get_tab_position_by_guake_index(self, guake_tab_index):
+        for term in self.notebook.term_list:
+            if guake_tab_index == term.guake_tab_index:
+                pprint(vars(term))
+                pprint(self.guake_tab_counter)
+                pprint(self.notebook.page_num(term.link2box))
+                return self.notebook.page_num(term.link2box)
+        return -1
 
     def search_on_web(self, *args):
         """search on web the selected text

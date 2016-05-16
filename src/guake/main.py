@@ -102,6 +102,11 @@ def main():
                       action='store', default='',
                       help=_('Execute an arbitrary command in the selected tab.'))
 
+    parser.add_option('--get-tab-position', dest='get_tab_position_by_guake_index',
+                      action='store', default='0',
+                      help=_('guake -i $(guake --get-tab-position=$GUAKE_TAB_INDEX) '
+                             '--rename-tab rename-not-current-tab'))
+
     parser.add_option('-i', '--tab-index', dest='tab_index',
                       action='store', default='0',
                       help=_('Specify the tab to rename. Default is 0.'))
@@ -185,6 +190,15 @@ def main():
 
     if options.command:
         remote_object.execute_command(options.command)
+        only_show_hide = False
+
+    if options.get_tab_position_by_guake_index:
+        guake_tab_index = int(options.get_tab_position_by_guake_index)
+        i = remote_object.get_tab_position_by_guake_index(guake_tab_index)
+        if i == -1:
+            sys.stdout.write('invalid guake_tab_index: %d\n' % guake_tab_index)
+        else:
+            sys.stdout.write('%d\n' % i)
         only_show_hide = False
 
     if options.tab_index and options.rename_tab:

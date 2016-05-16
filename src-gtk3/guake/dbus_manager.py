@@ -99,6 +99,10 @@ class DbusManager(dbus.service.Object):
     def get_tab_name(self, tab_index=0):
         return self.guake.notebook.term_list[int(tab_index)].get_window_title() or ''
 
+    @dbus.service.method(DBUS_NAME, in_signature='i', out_signature='i')
+    def get_tab_position_by_guake_index(self, guake_tab_index=0):
+        return self.guake.get_tab_position_by_guake_index(int(guake_tab_index))
+
     @dbus.service.method(DBUS_NAME, in_signature='is')
     def rename_tab(self, tab_index, new_text):
         self.guake.rename_tab(tab_index, new_text)
