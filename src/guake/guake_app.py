@@ -1787,9 +1787,9 @@ class Guake(SimpleGladeApp):
     def get_tab_position_by_guake_index(self, guake_tab_index):
         for term in self.notebook.term_list:
             if guake_tab_index == term.guake_tab_index:
-                pprint(vars(term))
-                pprint(self.guake_tab_counter)
-                pprint(self.notebook.page_num(term.link2box))
+                # pprint(vars(term))
+                # pprint(self.guake_tab_counter)
+                # pprint(self.notebook.page_num(term.link2box))
                 return self.notebook.page_num(term.link2box)
         return -1
 
