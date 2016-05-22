@@ -604,12 +604,17 @@ class PrefsDialog(SimpleGladeApp):
         """Changes the value of cursor_shape in gconf
         """
         index = combo.get_active()
-        self.client.set_int(KEY('/style/cursor_shape'), index)
+        prev = self.client.get_int(KEY('/style/cursor_shape'))
+        if prev != index:
+            self.client.set_int(KEY('/style/cursor_shape'), index)
 
     def on_blink_cursor_toggled(self, chk):
         """Changes the value of blink_cursor in gconf
         """
-        self.client.set_int(KEY('/style/cursor_blink_mode'), chk.get_active())
+        index = chk.get_active()
+        prev = self.client.get_int(KEY('/style/cursor_blink_mode'))
+        if prev != index:
+            self.client.set_int(KEY('/style/cursor_blink_mode'), index)
 
     def on_palette_color_set(self, btn):
         """Changes the value of palette in gconf

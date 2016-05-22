@@ -105,9 +105,7 @@ class GuakeTerminal(vte.Terminal):
         self.set_flags(gtk.CAN_DEFAULT)
         self.set_flags(gtk.CAN_FOCUS)
         cursor_blink_mode = client.get_int(KEY('/style/cursor_blink_mode'))
-        client.set_int(KEY('/style/cursor_blink_mode'), cursor_blink_mode)
         cursor_shape = client.get_int(KEY('/style/cursor_shape'))
-        client.set_int(KEY('/style/cursor_shape'), cursor_shape)
 
     def add_matches(self):
         """Adds all regular expressions declared in
