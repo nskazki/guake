@@ -103,7 +103,7 @@ def main():
                       help=_('Execute an arbitrary command in the selected tab.'))
 
     parser.add_option('--get-tab-position', dest='get_tab_position_by_guake_index',
-                      action='store', default='0',
+                      action='store', default='',
                       help=_('guake -i $(guake --get-tab-position=$GUAKE_TAB_INDEX) '
                              '--rename-tab rename-not-current-tab'))
 
